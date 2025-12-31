@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Love Letter 💌</title>
+
+<style>
+body {
+  background: #ffe4e1;
+  overflow: hidden;
+  margin: 0;
+  font-family: cursive;
+}
+
+
+.lights {
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 18px;
+  z-index: 25;
+}
+
+.bulb {
+  width: 14px;
+  height: 14px;
+  background: rgb(255, 203, 62);
+  border-radius: 50%;
+  animation: glow 1.5s infinite alternate;
+}
+
+.bulb:nth-child(odd) {
+  animation-delay: 0.7s;
+}
+
+@keyframes glow {
+  from { opacity: 0.4; box-shadow: none; }
+  to { opacity: 1; box-shadow: 0 0 15px hotpink; }
+}
+
+
+.heart {
+  position: fixed;
+  bottom: -20px;
+  font-size: 28px;
+  animation: floatUp 6s linear infinite;
+  opacity: 0.7;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0); opacity: 0.8; }
+  to { transform: translateY(-120vh); opacity: 0; }
+}
+
+
+.lyrics {
+  position: fixed;
+  bottom: 70px;
+  width: 100%;
+  text-align: center;
+  font-size: 22px;
+  color: rgba(255, 0, 128, 0.997);
+  font-style: italic;
+  letter-spacing: 1px;
+  opacity: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.show-lyrics {
+  animation: fadeLyrics 4.5s ease-in-out;
+}
+
+@keyframes fadeLyrics {
+  0% { opacity: 0; transform: translateY(25px); }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-25px); }
+}
+
+
+.envelope {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 420px;
+  height: 260px;
+  background: #ff6f91;
+  border-radius: 8px;
+  z-index: 5;
+}
+
+.flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-left: 210px solid transparent;
+  border-right: 210px solid transparent;
+  border-top: 130px solid #ff4d6d;
+}
+
+button {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 30px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+
+.letter {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 620px;
+  height: 520px;
+  background: white;
+  border-radius: 16px;
+  padding: 45px;
+  box-sizing: border-box;
+  text-align: center;
+  z-index: 20;
+  transition: transform 1s ease;
+  border: 8px solid pink;
+  overflow: hidden;
+}
+
+
+.letter::before {
+  content: "🌸 💖 🌸 💖 🌸 💖 🌸";
+  position: absolute;
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 22px;
+}
+
+.letter::after {
+  content: "💗 🌷 💗 🌷 💗 🌷 💗";
+  position: absolute;
+  bottom: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 22px;
+}
+
+.bow {
+  position: absolute;
+  top: -55px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 48px;
+}
+
+.letter.show {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+h2 {
+  color: #ff4d6d;
+}
+
+/* Scrollable message */
+.message-box {
+  margin-top: 20px;
+  height: 300px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.message-box::-webkit-scrollbar {
+  width: 6px;
+}
+
+.message-box::-webkit-scrollbar-thumb {
+  background: pink;
+  border-radius: 10px;
+}
+
+.message-box::-webkit-scrollbar-track {
+  background: #ffe4ec;
+}
+
+.typing {
+  font-size: 18px;
+  line-height: 1.8;
+}
+</style>
+</head>
+
+<body>
+
+
+<div class="lights">
+  <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+  <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+  <div class="bulb"></div><div class="bulb"></div>
+</div>
+
+
+<div class="lyrics" id="lyrics"></div>
+
+
+<audio id="bgMusic" loop>
+  <source src="out_of_my_league (1).mp3" type="audio/mpeg">
+</audio>
+
+
+<div class="envelope" id="env">
+  <div class="flap"></div>
+  <button onclick="openLetter()">OPEN 💌</button>
+</div>
+
+
+<div class="letter" id="letter">
+  <div class="bow">🎀</div>
+  <h2>My Love ❤️</h2>
+  <div class="message-box">
+    <p class="typing" id="text"></p>
+  </div>
+</div>
+
+<script>
+const message = `Dear Shivam this year felt different kyuki aap the sath me mere.
+Every smile, every moment, every memory
+felt warmer with you by my side.
+
+If I had to choose again,
+I would still choose you and humesha 💕
+
+I wish to celebrate this new year and aage ke jitne bhi new years aaye apke sath hi celebrate kru
+until I die :)
+and yeah I love you today, I'll love you tomorrow and I'll always love you Shivam :>
+ananya apki hi h jealous mtt hua kro kahi jaungi ni chrodke apne Shivam ko 😝
+
+Happy New Year babyyy❤️`;
+
+let i = 0;
+
+function openLetter() {
+  document.getElementById("env").remove();
+  document.getElementById("letter").classList.add("show");
+  document.getElementById("bgMusic").play();
+  typeText();
+  bigBurst();
+}
+
+function typeText() {
+  if (i < message.length) {
+    document.getElementById("text").innerHTML +=
+      message[i] === "\n" ? "<br>" : message[i];
+    i++;
+    setTimeout(typeText, 45);
+  }
+}
+
+
+setInterval(() => {
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.innerHTML = "💖";
+  h.style.left = Math.random() * 100 + "vw";
+  h.style.fontSize = (26 + Math.random() * 24) + "px";
+  h.style.animationDuration = (4 + Math.random() * 3) + "s";
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 7000);
+}, 300);
+
+
+const lyricsData = [
+  { time: 0, text: "You know the ones who said I'd never find someone like you" },
+  { time: 7, text: "’Cause you were out of my league" },
+  { time: 9, text: "All the things I believed" },
+  { time: 12, text: "You were just the right kind" },
+  { time: 15, text: "Yeah, you were more than just a dream" },
+  { time: 18, text: "You were out of my league" },
+  { time: 21, text: "Got my heartbeat racing" },
+  { time: 24, text: "If I die, don't wake me" },
+  { time: 26, text: "’Cause you are more than just a dream 💕" }
+];
+
+const audio = document.getElementById("bgMusic");
+const lyricsBox = document.getElementById("lyrics");
+let lyricIndex = 0;
+
+audio.addEventListener("timeupdate", () => {
+  if (lyricIndex < lyricsData.length && audio.currentTime >= lyricsData[lyricIndex].time) {
+    lyricsBox.textContent = lyricsData[lyricIndex].text;
+    lyricsBox.classList.remove("show-lyrics");
+    void lyricsBox.offsetWidth;
+    lyricsBox.classList.add("show-lyrics");
+    lyricIndex++;
+  }
+});
+
+
+function bigBurst() {
+  const emojis = ["❤️","💖","💗","🌸","🌺","🌹","💐"];
+  for (let j = 0; j < 70; j++) {
+    const e = document.createElement("div");
+    e.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+    e.style.position = "fixed";
+    e.style.left = "50%";
+    e.style.top = "50%";
+    e.style.fontSize = "54px";
+    e.style.transition = "1.3s ease";
+    document.body.appendChild(e);
+
+    const x = (Math.random() - 0.5) * 900;
+    const y = (Math.random() - 0.5) * 900;
+
+    setTimeout(() => {
+      e.style.transform = `translate(${x}px, ${y}px) rotate(${Math.random()*360}deg)`;
+      e.style.opacity = "0";
+    }, 50);
+
+    setTimeout(() => e.remove(), 1400);
+  }
+}
+</script>
+
+</body>
+</html>
